@@ -314,6 +314,9 @@
 .product-thumbs .empty-state { aspect-ratio: 1/1; border-radius: var(--radius-sm); min-height: 0; padding: 0.4rem; }
 .product-thumbs .empty-state .ico { width: 26px; height: 26px; }
 .product-thumbs .empty-state b, .product-thumbs .empty-state small { display: none; }
+.product-thumb { aspect-ratio: 1/1; border-radius: var(--radius-sm); overflow: hidden; padding: 0; border: 2px solid transparent; background: var(--color-cream-100); cursor: pointer; transition: border-color 0.25s ease; }
+.product-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 0.35rem; box-sizing: border-box; display: block; }
+.product-thumb.is-active { border-color: var(--color-sage-700); }
 @media (max-width: 420px) { .product-thumbs { grid-template-columns: repeat(4, minmax(50px, 1fr)); gap: 0.5rem; } }
 
 .product-notice {

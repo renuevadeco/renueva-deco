@@ -1,6 +1,19 @@
 /* RENUEVA DECO — Núcleo: navegación, scroll reveal, parallax, utilidades globales */
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* ===== Galería de producto: miniaturas que cambian la foto principal ===== */
+  document.querySelectorAll('.product-thumbs').forEach(thumbs => {
+    const mainImg = document.querySelector('.product-gallery-main img');
+    if (!mainImg) return;
+    thumbs.querySelectorAll('.product-thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        if (thumb.dataset.full) mainImg.src = thumb.dataset.full;
+        thumbs.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('is-active'));
+        thumb.classList.add('is-active');
+      });
+    });
+  });
+
   /* ===== Header: estado al hacer scroll ===== */
   const header = document.querySelector('.site-header');
   const setHeaderState = () => {
