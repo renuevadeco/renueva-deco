@@ -109,7 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             throw new Error(data.message || 'Error de envío');
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error('Error al enviar el formulario:', err);
           errorMsg.classList.add('is-visible');
           if (submitBtn) {
             submitBtn.disabled = false;
