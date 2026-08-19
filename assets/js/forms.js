@@ -11,9 +11,9 @@ const WEB3FORMS_ACCESS_KEY = '7d4701c8-575a-434e-837c-ef1ceab53093';
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
 /* El plan gratuito de Web3Forms no permite adjuntar archivos, así que el
-   formulario de Cotizaciones (que sí adjunta imágenes) usa FormSubmit.co,
-   que es gratis y sí soporta adjuntos — se activa con data-mailer="formsubmit". */
-const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/renueva.deco.carpinteria@gmail.com';
+   formulario de Cotizaciones (que sí adjunta imágenes) usa FormSubmit.co en
+   su modo de envío nativo (data-mailer="formsubmit") — FormSubmit solo
+   procesa adjuntos con un envío de formulario tradicional, no por AJAX. */
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -68,8 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
     errorMsg.textContent = 'No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos directo por WhatsApp.';
     form.appendChild(errorMsg);
 
+    const useFormSubmit = form.dataset.mailer === 'formsubmit';
+
     form.addEventListener('submit', (e) => {
-      e.preventDefault();
       errorMsg.classList.remove('is-visible');
       let isValid = true;
       let firstInvalid = null;
@@ -86,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (!isValid) {
+        e.preventDefault();
         if (firstInvalid) firstInvalid.focus();
         return;
       }
@@ -96,23 +98,20 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.classList.add('is-loading');
       }
 
-      const useFormSubmit = form.dataset.mailer === 'formsubmit';
+      /* FormSubmit necesita un envío de formulario real (no AJAX) para
+         poder adjuntar archivos, así que aquí se deja seguir su curso normal. */
+      if (useFormSubmit) return;
+
+      e.preventDefault();
       const formData = new FormData(form);
+      formData.append('access_key', WEB3FORMS_ACCESS_KEY);
+      formData.append('from_name', 'RENUEVA DECO — Sitio Web');
+      formData.append('subject', form.dataset.subject || 'Nuevo mensaje desde renuevadeco.com');
 
-      if (useFormSubmit) {
-        formData.append('_subject', form.dataset.subject || 'Nuevo mensaje desde renuevadeco.com');
-        formData.append('_template', 'table');
-      } else {
-        formData.append('access_key', WEB3FORMS_ACCESS_KEY);
-        formData.append('from_name', 'RENUEVA DECO — Sitio Web');
-        formData.append('subject', form.dataset.subject || 'Nuevo mensaje desde renuevadeco.com');
-      }
-
-      fetch(useFormSubmit ? FORMSUBMIT_ENDPOINT : WEB3FORMS_ENDPOINT, { method: 'POST', body: formData })
+      fetch(WEB3FORMS_ENDPOINT, { method: 'POST', body: formData })
         .then(res => res.json())
         .then(data => {
-          const ok = useFormSubmit ? (data.success === true || data.success === 'true') : data.success;
-          if (ok) {
+          if (data.success) {
             if (form.dataset.saveReview && window.saveReviewToFirestore) {
               window.saveReviewToFirestore(formData);
             }
@@ -165,4 +164,14 @@ document.addEventListener('DOMContentLoaded', () => {
       wrapper.querySelectorAll('.upload-previews').forEach(p => p.innerHTML = '');
     });
   });
+
+  /* FormSubmit redirige de vuelta con ?enviado=1 tras un envío exitoso
+     (ver _next en el formulario de Cotizaciones) — mostramos el agradecimiento. */
+  if (new URLSearchParams(location.search).get('enviado') === '1') {
+    const form = document.querySelector('.validate-form[data-mailer="formsubmit"]');
+    const successPanel = form ? form.parentElement.querySelector('.success-panel') : null;
+    if (form) form.classList.add('hidden-form');
+    if (successPanel) successPanel.classList.add('is-visible');
+    history.replaceState(null, '', location.pathname);
+  }
 });

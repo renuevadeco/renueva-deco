@@ -92,7 +92,11 @@
         </div>
 
         <div class="form-shell" data-reveal="right">
-          <form class="validate-form" id="quote-form" data-mailer="formsubmit" data-subject="Nueva solicitud de cotización — RENUEVA DECO" novalidate>
+          <form class="validate-form" id="quote-form" data-mailer="formsubmit"
+                action="https://formsubmit.co/renueva.deco.carpinteria@gmail.com" method="POST" enctype="multipart/form-data" novalidate>
+            <input type="hidden" name="_subject" value="Nueva solicitud de cotización — RENUEVA DECO">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://renuevadeco.com/pages/cotizaciones.html?enviado=1">
             <div class="form-grid cols-2">
               <div class="field">
                 <label for="q-nombre">Nombre Completo</label>
