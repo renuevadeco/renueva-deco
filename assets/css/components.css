@@ -396,7 +396,14 @@
 .reviews-shell { position: relative; overflow: hidden; }
 .reviews-track { display: flex; transition: transform 0.7s var(--ease-premium); }
 .review-slide { flex: 0 0 100%; padding: 0 0.5rem; }
+.review-page { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+@media (min-width: 680px) { .review-page { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .review-page { grid-template-columns: repeat(3, 1fr); } }
 .review-card { background: var(--color-white); border-radius: var(--radius-lg); padding: clamp(1.75rem, 4vw, 3rem); box-shadow: var(--shadow-md); text-align: center; max-width: 640px; margin: 0 auto; }
+.review-page .review-card { max-width: none; margin: 0; height: 100%; display: flex; flex-direction: column; text-align: left; }
+.review-page .review-stars { justify-content: flex-start; }
+.review-page .review-person { justify-content: flex-start; }
+.review-page .review-quote { font-size: 1rem; }
 .review-stars { display: flex; justify-content: center; gap: 0.3rem; color: var(--color-gold-500); margin-bottom: 1.25rem; }
 .review-quote { font-family: var(--font-serif); font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--color-charcoal-900); line-height: 1.5; margin-bottom: 1.75rem; }
 .review-person { display: flex; align-items: center; justify-content: center; gap: 0.85rem; }

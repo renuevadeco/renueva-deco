@@ -26,7 +26,7 @@ function buildReviewCard(review) {
   return card;
 }
 
-/* Carrusel automático: una reseña visible a la vez, avanza a la izquierda cada 15s */
+/* Carrusel automático: páginas de varias reseñas a la vez, avanza a la izquierda cada 15s */
 const REVIEW_SLIDE_MS = 15000;
 
 function initReviewCarousel(shell, track, count) {
@@ -76,6 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Mejor calificadas primero; entre iguales, las más recientes primero
       reviews.sort((a, b) => (b.calificacion - a.calificacion) || (millis(b.timestamp) - millis(a.timestamp)));
 
+      const REVIEWS_PER_PAGE = 6;
+
       grids.forEach((grid) => {
         const limit = Number(grid.dataset.reviewsLimit) || reviews.length;
         const items = reviews.slice(0, limit);
@@ -86,16 +88,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const track = document.createElement('div');
         track.className = 'reviews-track';
 
-        items.forEach((review) => {
+        let pageCount = 0;
+        for (let i = 0; i < items.length; i += REVIEWS_PER_PAGE) {
           const slide = document.createElement('div');
           slide.className = 'review-slide';
-          slide.appendChild(buildReviewCard(review));
+          const page = document.createElement('div');
+          page.className = 'review-page';
+          items.slice(i, i + REVIEWS_PER_PAGE).forEach((review) => page.appendChild(buildReviewCard(review)));
+          slide.appendChild(page);
           track.appendChild(slide);
-        });
+          pageCount++;
+        }
 
         shell.appendChild(track);
         grid.appendChild(shell);
-        initReviewCarousel(shell, track, items.length);
+        initReviewCarousel(shell, track, pageCount);
       });
     })
     .catch((err) => console.error('No se pudieron cargar las reseñas:', err));
