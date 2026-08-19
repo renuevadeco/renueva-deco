@@ -14,12 +14,12 @@
       a mí y yo lo dejo activado.
 */
 const firebaseConfig = {
-  apiKey: "REEMPLAZA_CON_TU_API_KEY",
-  authDomain: "REEMPLAZA.firebaseapp.com",
-  projectId: "REEMPLAZA",
-  storageBucket: "REEMPLAZA.appspot.com",
-  messagingSenderId: "REEMPLAZA",
-  appId: "REEMPLAZA"
+  apiKey: "AIzaSyCoQp6kFaGF1NXxVI9-fPvMJK_6nC30dQc",
+  authDomain: "renueva-deco.firebaseapp.com",
+  projectId: "renueva-deco",
+  storageBucket: "renueva-deco.firebasestorage.app",
+  messagingSenderId: "1061269046201",
+  appId: "1:1061269046201:web:e28a8bf54629ab73caec68"
 };
 
 if (firebaseConfig.apiKey !== "REEMPLAZA_CON_TU_API_KEY" && window.firebase) {
