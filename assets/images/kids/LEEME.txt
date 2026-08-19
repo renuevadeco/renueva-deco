@@ -1,0 +1,12 @@
+Coloca aquí tu banner ilustrado de "RENUEVA DECO KIDS"
+(el de los animalitos: perro, oso, jirafa, cocodrilo, salchicha).
+
+Nombre esperado: banner.jpg
+(también funciona si lo guardas como banner.png)
+
+Recomendación: usa la imagen en buena resolución (mínimo 1200px de ancho)
+para que se vea nítida al mostrarse grande en la página.
+
+Dónde aparece: en pages/portafolio.html, arriba de las tarjetas de
+producto, únicamente cuando el visitante hace clic en el filtro
+"Línea Kids". Flota suavemente con una animación de aparición + rebote.

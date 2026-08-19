@@ -1,0 +1,7 @@
+Espacio reservado para fotografías de fichas de producto.
+
+Cómo usarlas:
+1. Duplica pages/producto.html por cada mueble de tu catálogo (ej. producto-mesa-comedor.html).
+2. Coloca aquí las fotografías del producto (imagen principal + miniaturas).
+3. Reemplaza los bloques "empty-state" dentro de ".product-gallery-main" y ".product-thumbs"
+   por etiquetas <img src="../assets/images/products/tu-foto.jpg" alt="...">.

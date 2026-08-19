@@ -1,0 +1,23 @@
+Coloca aquí las fotos del carrusel del Hero (portada de index.html).
+
+Nombres esperados (6 espacios, numerados del 1 al 6):
+  hero-1   hero-2   hero-3   hero-4   hero-5   hero-6
+
+Formatos aceptados para cada uno: .jpg, .jpeg, .png o .webp
+(el sitio prueba automáticamente cada formato hasta encontrar el archivo,
+así que puedes mezclar formatos entre las 6 fotos sin problema).
+
+Cómo funciona:
+- No necesitas usar las 6. El carrusel detecta cuáles existen y rota
+  solo entre esas.
+- Si no subes ninguna, se muestra el aviso "Tu proyecto aquí" — nada se rompe.
+- Cambia de foto automáticamente cada 5 segundos con una transición
+  suave (fundido).
+
+Recomendaciones:
+- Orientación vertical o 4:5 (el marco es más alto que ancho).
+- Ancho mínimo recomendado: 1000px.
+- Idealmente menos de 500KB cada una para que la portada cargue rápido
+  (si alguna foto pesa varios MB, conviene comprimirla).
+- Si quieres más de 6 fotos o cambiar el tiempo de rotación (5 segundos),
+  pídemelo y lo ajusto en assets/js/hero-slider.js.

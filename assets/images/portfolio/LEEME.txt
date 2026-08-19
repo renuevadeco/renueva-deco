@@ -1,0 +1,9 @@
+Espacio reservado para las fotografías de tus proyectos.
+
+Cómo agregarlas:
+1. Copia aquí tus fotografías (formato .jpg o .webp recomendado, ancho ~1200px).
+2. En index.html, pages/portafolio.html y pages/carpinteria.html / linea-infantil.html / hogar.html,
+   busca los bloques con clase "empty-state" dentro de "portfolio-card" y reemplázalos por:
+   <img src="../assets/images/portfolio/tu-foto.jpg" alt="Descripción del proyecto">
+3. Ajusta el atributo data-category del "portfolio-item" según corresponda
+   (cocinas, mobiliario, remodelaciones, carpinteria, infantil, hogar) para que los filtros funcionen.

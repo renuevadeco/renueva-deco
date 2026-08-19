@@ -1,0 +1,5 @@
+Espacio reservado para fotografías del equipo y el taller.
+
+Se usan en la sección "Nosotros" de index.html (bloques "empty-state" dentro de ".about-visual")
+y pueden reutilizarse en las páginas de categoría (".about-visual" en pages/carpinteria.html,
+pages/linea-infantil.html y pages/hogar.html).

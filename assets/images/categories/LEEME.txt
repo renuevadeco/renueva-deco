@@ -1,0 +1,9 @@
+Espacio opcional para fotografías de fondo de las páginas de categoría
+(pages/carpinteria.html, pages/linea-infantil.html, pages/hogar.html).
+
+Actualmente el bloque ".category-hero-bg" usa un degradado de marca (CSS).
+Si quieres reemplazarlo por una fotografía, coloca la imagen aquí y en el CSS
+(assets/css/components.css, regla ".category-hero-bg") agrega:
+background-image: url('../images/categories/tu-foto.jpg');
+background-size: cover;
+background-position: center;

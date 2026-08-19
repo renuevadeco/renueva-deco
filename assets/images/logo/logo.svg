@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" role="img" aria-label="Isotipo RENUEVA DECO">
+  <!-- Casa -->
+  <path d="M100 18 L156 68 L156 176 L44 176 L44 68 Z"
+        stroke="#3E5D46" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Ramita de hojas -->
+  <g stroke="#4F7350" stroke-width="2.4" stroke-linecap="round">
+    <path d="M63 176 C63 150 60 132 55 118"/>
+    <path d="M55 118 C48 122 41 121 36 115 C42 111 49 111 55 118 Z" fill="#4F7350"/>
+    <path d="M59 134 C52 138 45 137 40 131 C46 127 53 127 59 134 Z" fill="#4F7350"/>
+    <path d="M63 150 C70 154 77 153 82 147 C76 143 69 143 63 150 Z" fill="#4F7350"/>
+    <path d="M60 165 C53 169 46 168 41 162 C47 158 54 158 60 165 Z" fill="#4F7350"/>
+  </g>
+
+  <!-- Silla rattan -->
+  <g>
+    <!-- Respaldo tejido -->
+    <path d="M78 118 C78 96 92 84 112 84 C132 84 145 97 143 118 C142 128 133 134 122 134 L96 134 C86 134 79 128 78 118 Z"
+          fill="#EFDCC0" stroke="#A9793E" stroke-width="3" stroke-linejoin="round"/>
+    <g stroke="#C9A468" stroke-width="1.4" opacity="0.85">
+      <path d="M86 122 L118 92"/><path d="M92 128 L128 94"/><path d="M100 132 L136 100"/>
+      <path d="M108 133 L140 108"/><path d="M84 114 L106 90"/><path d="M96 130 L134 108"/>
+    </g>
+
+    <!-- Cojín -->
+    <rect x="82" y="130" width="60" height="18" rx="9" fill="#FBF7F1" stroke="#A9793E" stroke-width="3"/>
+
+    <!-- Patas -->
+    <g stroke="#8F6238" stroke-width="4" stroke-linecap="round">
+      <path d="M90 147 L80 172"/>
+      <path d="M134 147 L146 172"/>
+      <path d="M100 148 L96 168"/>
+      <path d="M124 148 L130 168"/>
+    </g>
+  </g>
+</svg>

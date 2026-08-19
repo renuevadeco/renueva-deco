@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /reviews/{reviewId} {
+
+      // Cualquiera puede ENVIAR una reseña (sin necesidad de crear cuenta),
+      // siempre que tenga la forma correcta.
+      allow create: if request.resource.data.nombre is string
+                    && request.resource.data.nombre.size() > 0
+                    && request.resource.data.nombre.size() < 100
+                    && request.resource.data.calificacion is number
+                    && request.resource.data.calificacion >= 1
+                    && request.resource.data.calificacion <= 5
+                    && request.resource.data.comentario is string
+                    && request.resource.data.comentario.size() > 0
+                    && request.resource.data.comentario.size() < 1000;
+
+      // Solo se pueden LEER (mostrar en la web) las reseñas de 3 estrellas
+      // o más. Las de 1-2 estrellas quedan guardadas pero ocultas al público.
+      allow read: if resource.data.calificacion >= 3;
+
+      // Nadie puede editar ni borrar reseñas desde el sitio web
+      // (solo tú, manualmente, desde la consola de Firebase).
+      allow update, delete: if false;
+    }
+  }
+}

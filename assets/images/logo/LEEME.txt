@@ -1,0 +1,11 @@
+Coloca aquí tu logotipo con el nombre EXACTO: logo.png
+
+Rutas que ya lo referencian en el sitio:
+- index.html (header y footer)
+- pages/*.html (header y footer, como ../assets/images/logo/logo.png)
+- Favicon e imagen Open Graph (og:image) en index.html
+
+Recomendaciones:
+- Formato PNG con fondo transparente.
+- Ancho mínimo recomendado: 300px.
+- Si usas otro nombre de archivo, actualiza el atributo src en cada header/footer y el <link rel="icon">.
