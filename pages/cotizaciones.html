@@ -92,7 +92,7 @@
         </div>
 
         <div class="form-shell" data-reveal="right">
-          <form class="validate-form" id="quote-form" data-subject="Nueva solicitud de cotización — RENUEVA DECO" novalidate>
+          <form class="validate-form" id="quote-form" data-mailer="formsubmit" data-subject="Nueva solicitud de cotización — RENUEVA DECO" novalidate>
             <div class="form-grid cols-2">
               <div class="field">
                 <label for="q-nombre">Nombre Completo</label>
@@ -109,7 +109,7 @@
             <div class="form-grid cols-2" style="margin-top:1.25rem;">
               <div class="field">
                 <label for="q-telefono">Teléfono</label>
-                <input type="tel" id="q-telefono" name="telefono" required pattern="[0-9+\s\-()]{7,15}" placeholder="300 123 4567">
+                <input type="tel" id="q-telefono" name="telefono" required pattern="[0-9 +()-]{7,15}" placeholder="300 123 4567">
                 <span class="error-msg">Ingresa un teléfono válido.</span>
               </div>
               <div class="field">

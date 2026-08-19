@@ -10,6 +10,11 @@
 const WEB3FORMS_ACCESS_KEY = '7d4701c8-575a-434e-837c-ef1ceab53093';
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
+/* El plan gratuito de Web3Forms no permite adjuntar archivos, así que el
+   formulario de Cotizaciones (que sí adjunta imágenes) usa FormSubmit.co,
+   que es gratis y sí soporta adjuntos — se activa con data-mailer="formsubmit". */
+const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/renueva.deco.carpinteria@gmail.com';
+
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ===== Zonas de carga de imágenes (drag & drop) ===== */
@@ -91,15 +96,23 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.classList.add('is-loading');
       }
 
+      const useFormSubmit = form.dataset.mailer === 'formsubmit';
       const formData = new FormData(form);
-      formData.append('access_key', WEB3FORMS_ACCESS_KEY);
-      formData.append('from_name', 'RENUEVA DECO — Sitio Web');
-      formData.append('subject', form.dataset.subject || 'Nuevo mensaje desde renuevadeco.com');
 
-      fetch(WEB3FORMS_ENDPOINT, { method: 'POST', body: formData })
+      if (useFormSubmit) {
+        formData.append('_subject', form.dataset.subject || 'Nuevo mensaje desde renuevadeco.com');
+        formData.append('_template', 'table');
+      } else {
+        formData.append('access_key', WEB3FORMS_ACCESS_KEY);
+        formData.append('from_name', 'RENUEVA DECO — Sitio Web');
+        formData.append('subject', form.dataset.subject || 'Nuevo mensaje desde renuevadeco.com');
+      }
+
+      fetch(useFormSubmit ? FORMSUBMIT_ENDPOINT : WEB3FORMS_ENDPOINT, { method: 'POST', body: formData })
         .then(res => res.json())
         .then(data => {
-          if (data.success) {
+          const ok = useFormSubmit ? (data.success === true || data.success === 'true') : data.success;
+          if (ok) {
             if (form.dataset.saveReview && window.saveReviewToFirestore) {
               window.saveReviewToFirestore(formData);
             }
