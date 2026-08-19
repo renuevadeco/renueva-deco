@@ -29,17 +29,18 @@ function buildReviewCard(review) {
 
 /* Guarda una reseña nueva (llamado desde forms.js tras un envío exitoso) */
 window.saveReviewToFirestore = function (formData) {
-  if (!window.firebase || !firebase.apps || !firebase.apps.length) return;
-  try {
-    firebase.firestore().collection('reviews').add({
-      nombre: (formData.get('nombre') || '').toString().slice(0, 99),
-      calificacion: Number(formData.get('calificacion')) || 0,
-      comentario: (formData.get('comentario') || '').toString().slice(0, 999),
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  } catch (err) {
-    console.error('No se pudo guardar la reseña en Firestore:', err);
+  if (!window.firebase || !firebase.apps || !firebase.apps.length) {
+    console.error('Firebase no está inicializado: revisa assets/js/firebase-config.js');
+    return;
   }
+  firebase.firestore().collection('reviews').add({
+    nombre: (formData.get('nombre') || '').toString().slice(0, 99),
+    calificacion: Number(formData.get('calificacion')) || 0,
+    comentario: (formData.get('comentario') || '').toString().slice(0, 999),
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  }).catch((err) => {
+    console.error('No se pudo guardar la reseña en Firestore:', err);
+  });
 };
 
 /* Carga y pinta las reseñas publicadas (3-5 estrellas) en cada .reviews-grid de la página */
