@@ -17,13 +17,20 @@ const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ===== Zonas de carga de imágenes (drag & drop) ===== */
+  /* ===== Zonas de carga de imágenes (drag & drop) =====
+     FormSubmit no soporta un solo campo con varios archivos (multiple);
+     necesita un input por archivo. Por eso el input visible solo sirve
+     para elegir/soltar imágenes, y aquí las repartimos en los inputs
+     ocultos (attachment1..6) que sí se envían con el formulario. */
   document.querySelectorAll('.upload-zone').forEach(zone => {
     const input = document.getElementById(zone.dataset.input);
     const previews = document.querySelector(zone.dataset.previews);
+    const attachmentsBox = zone.dataset.attachments ? document.querySelector(zone.dataset.attachments) : null;
+    const hiddenInputs = attachmentsBox ? Array.from(attachmentsBox.querySelectorAll('input[type="file"]')) : [];
     if (!input) return;
 
-    const MAX_FILES = 6;
+    const MAX_FILES = hiddenInputs.length || 6;
+    let selectedFiles = [];
 
     zone.addEventListener('click', () => input.click());
     zone.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
@@ -36,25 +43,55 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     zone.addEventListener('drop', (e) => {
       const files = Array.from(e.dataTransfer.files || []).filter(f => f.type.startsWith('image/'));
-      renderPreviews(files);
+      addFiles(files);
     });
-    input.addEventListener('change', () => renderPreviews(Array.from(input.files || [])));
+    input.addEventListener('change', () => {
+      addFiles(Array.from(input.files || []));
+      input.value = '';
+    });
 
-    function renderPreviews(files) {
+    function addFiles(files) {
+      const room = Math.max(0, MAX_FILES - selectedFiles.length);
+      selectedFiles = selectedFiles.concat(files.slice(0, room));
+      renderPreviews();
+      syncHiddenInputs();
+    }
+
+    function removeFile(index) {
+      selectedFiles.splice(index, 1);
+      renderPreviews();
+      syncHiddenInputs();
+    }
+
+    function renderPreviews() {
       if (!previews) return;
-      const current = previews.querySelectorAll('.upload-thumb').length;
-      files.slice(0, Math.max(0, MAX_FILES - current)).forEach(file => {
+      previews.innerHTML = '';
+      selectedFiles.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = (e) => {
           const thumb = document.createElement('div');
           thumb.className = 'upload-thumb';
           thumb.innerHTML = `<img src="${e.target.result}" alt="${file.name}"><button type="button" class="remove" aria-label="Quitar imagen">&times;</button>`;
-          thumb.querySelector('.remove').addEventListener('click', () => thumb.remove());
+          thumb.querySelector('.remove').addEventListener('click', () => removeFile(index));
           previews.appendChild(thumb);
         };
         reader.readAsDataURL(file);
       });
     }
+
+    function syncHiddenInputs() {
+      hiddenInputs.forEach((hiddenInput, i) => {
+        const dt = new DataTransfer();
+        if (selectedFiles[i]) dt.items.add(selectedFiles[i]);
+        hiddenInput.files = dt.files;
+      });
+    }
+
+    zone._resetUploads = () => {
+      selectedFiles = [];
+      renderPreviews();
+      syncHiddenInputs();
+    };
   });
 
   /* ===== Validación y envío real (Web3Forms) ===== */
@@ -161,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (successPanel) successPanel.classList.remove('is-visible');
       if (submitBtn) { submitBtn.disabled = false; submitBtn.classList.remove('is-loading'); }
       if (submitLabel) submitLabel.textContent = submitBtn.dataset.defaultLabel || 'Enviar';
-      wrapper.querySelectorAll('.upload-previews').forEach(p => p.innerHTML = '');
+      wrapper.querySelectorAll('.upload-zone').forEach(zone => { if (zone._resetUploads) zone._resetUploads(); });
     });
   });
 

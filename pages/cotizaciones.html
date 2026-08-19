@@ -149,13 +149,21 @@
 
             <div class="field" style="margin-top:1.25rem;">
               <label>Imágenes de Referencia (opcional)</label>
-              <div class="upload-zone" tabindex="0" data-input="q-images" data-previews="#q-previews">
+              <div class="upload-zone" tabindex="0" data-input="q-images" data-previews="#q-previews" data-attachments="#q-attachments">
                 <span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4M12 4l-4 4M12 4l4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg></span>
                 <b>Haz clic o arrastra tus imágenes aquí</b>
                 <small>PNG o JPG · hasta 6 imágenes</small>
               </div>
-              <input type="file" id="q-images" name="attachments" accept="image/*" multiple hidden>
+              <input type="file" id="q-images" accept="image/*" multiple hidden>
               <div class="upload-previews" id="q-previews"></div>
+              <div id="q-attachments" hidden>
+                <input type="file" name="attachment1" hidden>
+                <input type="file" name="attachment2" hidden>
+                <input type="file" name="attachment3" hidden>
+                <input type="file" name="attachment4" hidden>
+                <input type="file" name="attachment5" hidden>
+                <input type="file" name="attachment6" hidden>
+              </div>
             </div>
 
             <button type="submit" class="btn btn-primary btn-block" style="margin-top:1.75rem;" data-default-label="Enviar Solicitud">
