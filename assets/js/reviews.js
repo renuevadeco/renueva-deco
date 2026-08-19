@@ -26,21 +26,47 @@ function buildReviewCard(review) {
   return card;
 }
 
-/* Carrusel automático: páginas de varias reseñas a la vez, avanza a la izquierda cada 15s */
-const REVIEW_SLIDE_MS = 15000;
+/* Rotación automática: el bloque de hasta 6 tarjetas queda fijo, y cada 15s
+   una tarjeta se desvanece y es reemplazada por la siguiente reseña de la
+   lista (en círculo), hasta ir mostrando todas sin mover el bloque. */
+const REVIEW_ROTATE_MS = 15000;
+const REVIEW_FADE_MS = 500;
 
-function initReviewCarousel(shell, track, count) {
-  if (count <= 1) return;
-  let index = 0;
-  let timer = setInterval(advance, REVIEW_SLIDE_MS);
-
-  function advance() {
-    index = (index + 1) % count;
-    track.style.transform = `translateX(-${index * 100}%)`;
+function initReviewRotation(shell, page, items) {
+  const SLOTS = 6;
+  if (items.length <= SLOTS) {
+    items.forEach((review) => page.appendChild(buildReviewCard(review)));
+    return;
   }
 
+  const slotCards = items.slice(0, SLOTS).map((review) => {
+    const card = buildReviewCard(review);
+    page.appendChild(card);
+    return card;
+  });
+
+  let nextIndex = SLOTS;
+  let slotToSwap = 0;
+
+  function swap() {
+    const oldCard = slotCards[slotToSwap];
+    oldCard.classList.add('is-swapping');
+    setTimeout(() => {
+      const newCard = buildReviewCard(items[nextIndex % items.length]);
+      newCard.classList.add('is-swapping');
+      page.replaceChild(newCard, oldCard);
+      void newCard.offsetWidth; // fuerza el reflow para que la transición de entrada anime
+      newCard.classList.remove('is-swapping');
+
+      slotCards[slotToSwap] = newCard;
+      nextIndex++;
+      slotToSwap = (slotToSwap + 1) % SLOTS;
+    }, REVIEW_FADE_MS);
+  }
+
+  let timer = setInterval(swap, REVIEW_ROTATE_MS);
   shell.addEventListener('mouseenter', () => clearInterval(timer));
-  shell.addEventListener('mouseleave', () => { timer = setInterval(advance, REVIEW_SLIDE_MS); });
+  shell.addEventListener('mouseleave', () => { timer = setInterval(swap, REVIEW_ROTATE_MS); });
 }
 
 /* Guarda una reseña nueva (llamado desde forms.js tras un envío exitoso) */
@@ -76,8 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Mejor calificadas primero; entre iguales, las más recientes primero
       reviews.sort((a, b) => (b.calificacion - a.calificacion) || (millis(b.timestamp) - millis(a.timestamp)));
 
-      const REVIEWS_PER_PAGE = 6;
-
       grids.forEach((grid) => {
         const limit = Number(grid.dataset.reviewsLimit) || reviews.length;
         const items = reviews.slice(0, limit);
@@ -85,24 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
         grid.innerHTML = '';
         const shell = document.createElement('div');
         shell.className = 'reviews-shell';
-        const track = document.createElement('div');
-        track.className = 'reviews-track';
-
-        let pageCount = 0;
-        for (let i = 0; i < items.length; i += REVIEWS_PER_PAGE) {
-          const slide = document.createElement('div');
-          slide.className = 'review-slide';
-          const page = document.createElement('div');
-          page.className = 'review-page';
-          items.slice(i, i + REVIEWS_PER_PAGE).forEach((review) => page.appendChild(buildReviewCard(review)));
-          slide.appendChild(page);
-          track.appendChild(slide);
-          pageCount++;
-        }
-
-        shell.appendChild(track);
+        const page = document.createElement('div');
+        page.className = 'review-page';
+        shell.appendChild(page);
         grid.appendChild(shell);
-        initReviewCarousel(shell, track, pageCount);
+
+        initReviewRotation(shell, page, items);
       });
     })
     .catch((err) => console.error('No se pudieron cargar las reseñas:', err));
