@@ -466,14 +466,8 @@
 @media (min-width: 720px) { .footer-grid { grid-template-columns: 1.3fr repeat(3, 1fr); } }
 @media (min-width: 720px) { .footer-bottom { flex-direction: row; justify-content: space-between; } }
 
-/* ---- Reseñas: grid completo ---- */
-.reviews-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-.reviews-grid .review-card { max-width: none; margin: 0; height: 100%; display: flex; flex-direction: column; text-align: left; }
-.reviews-grid .review-stars { justify-content: flex-start; }
-.reviews-grid .review-person { justify-content: flex-start; }
-.reviews-grid .review-quote { font-size: 1rem; }
-@media (min-width: 680px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1100px) { .reviews-grid { grid-template-columns: repeat(3, 1fr); } }
+/* ---- Reseñas: carrusel automático (cuando hay reseñas reales publicadas) ---- */
+.reviews-grid { width: 100%; }
 
 .review-cta-panel { text-align: center; background: var(--color-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: clamp(2rem, 4vw, 3rem); }
 

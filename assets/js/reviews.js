@@ -26,6 +26,23 @@ function buildReviewCard(review) {
   return card;
 }
 
+/* Carrusel automático: una reseña visible a la vez, avanza a la izquierda cada 15s */
+const REVIEW_SLIDE_MS = 15000;
+
+function initReviewCarousel(shell, track, count) {
+  if (count <= 1) return;
+  let index = 0;
+  let timer = setInterval(advance, REVIEW_SLIDE_MS);
+
+  function advance() {
+    index = (index + 1) % count;
+    track.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  shell.addEventListener('mouseenter', () => clearInterval(timer));
+  shell.addEventListener('mouseleave', () => { timer = setInterval(advance, REVIEW_SLIDE_MS); });
+}
+
 /* Guarda una reseña nueva (llamado desde forms.js tras un envío exitoso) */
 window.saveReviewToFirestore = function (formData) {
   if (!window.firebase || !firebase.apps || !firebase.apps.length) {
@@ -61,8 +78,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
       grids.forEach((grid) => {
         const limit = Number(grid.dataset.reviewsLimit) || reviews.length;
+        const items = reviews.slice(0, limit);
+
         grid.innerHTML = '';
-        reviews.slice(0, limit).forEach((review) => grid.appendChild(buildReviewCard(review)));
+        const shell = document.createElement('div');
+        shell.className = 'reviews-shell';
+        const track = document.createElement('div');
+        track.className = 'reviews-track';
+
+        items.forEach((review) => {
+          const slide = document.createElement('div');
+          slide.className = 'review-slide';
+          slide.appendChild(buildReviewCard(review));
+          track.appendChild(slide);
+        });
+
+        shell.appendChild(track);
+        grid.appendChild(shell);
+        initReviewCarousel(shell, track, items.length);
       });
     })
     .catch((err) => console.error('No se pudieron cargar las reseñas:', err));
