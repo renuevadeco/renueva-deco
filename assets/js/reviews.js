@@ -13,8 +13,7 @@ function escapeHtml(str) {
 
 function buildReviewCard(review) {
   const card = document.createElement('div');
-  card.className = 'review-card';
-  card.setAttribute('data-reveal', '');
+  card.className = 'review-card is-visible';
   const filled = Math.max(0, Math.min(5, Math.round(review.calificacion || 0)));
   const stars = '★★★★★☆☆☆☆☆'.slice(5 - filled, 10 - filled);
   card.innerHTML = `
